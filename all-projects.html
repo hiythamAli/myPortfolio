@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Projects | Haitham Ali</title>
+    <meta name="description" content="Browse all creative projects">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neon: "#00ff9d",
+                        cyber: "#7700ff",
+                        matrix: "#00ff41",
+                        dark: "#0a0a0a",
+                        glow: "#ff00ff"
+                    },
+                    fontFamily: {
+                        'mono': ['"Space Mono"', 'monospace'],
+                        'display': ['"Orbitron"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1);
+        }
+        
+        .card-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 157, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card-glass:hover {
+            border-color: rgba(0, 255, 157, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.1);
+        }
+        
+        .btn-cyber {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .btn-cyber::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-cyber:hover::before { left: 100%; }
+        
+        .btn-cyber:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
+        }
+        
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            cursor: pointer;
+        }
+        
+        .project-card img {
+            transition: all 0.5s ease;
+        }
+        
+        .project-card:hover img {
+            transform: scale(1.1);
+            filter: brightness(0.7);
+        }
+        
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.4) 50%, transparent 100%);
+            opacity: 0;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 25px;
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        
+        .project-content {
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.4s ease 0.1s;
+        }
+        
+        .project-card:hover .project-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .project-icon {
+            position: absolute;
+            top: 20px; right: 20px;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(-20px) scale(0.5);
+            transition: all 0.4s ease 0.2s;
+        }
+        
+        .project-card:hover .project-icon {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            background: transparent;
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            color: #666;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: #00ff9d;
+            color: #00ff9d;
+        }
+        
+        .filter-btn.active {
+            background: rgba(0, 255, 157, 0.1);
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.6s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .tag-neon { background: rgba(0, 255, 157, 0.2); border-color: rgba(0, 255, 157, 0.5); color: #00ff9d; }
+        .tag-cyber { background: rgba(119, 0, 255, 0.2); border-color: rgba(119, 0, 255, 0.5); color: #7700ff; }
+        .tag-matrix { background: rgba(0, 255, 65, 0.2); border-color: rgba(0, 255, 65, 0.5); color: #00ff41; }
+        .tag-glow { background: rgba(255, 0, 255, 0.2); border-color: rgba(255, 0, 255, 0.5); color: #ff00ff; }
+        
+        .icon-neon { background: rgba(0, 255, 157, 0.2); border-color: #00ff9d; color: #00ff9d; }
+        .icon-cyber { background: rgba(119, 0, 255, 0.2); border-color: #7700ff; color: #7700ff; }
+        .icon-matrix { background: rgba(0, 255, 65, 0.2); border-color: #00ff41; color: #00ff41; }
+        .icon-glow { background: rgba(255, 0, 255, 0.2); border-color: #ff00ff; color: #ff00ff; }
+    </style>
+</head>
+
+<body class="font-sans">
+    <!-- Background -->
+    <div class="grid-overlay"></div>
+    
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 py-4">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+            <a href="index.html" class="btn-cyber px-4 py-2 rounded-lg border border-neon text-neon text-sm font-display">
+                <i class="fas fa-arrow-left mr-2"></i> BACK HOME
+            </a>
+            <div class="text-xl font-display font-bold">
+                Haitham <span class="text-neon">.</span>Ali
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-28 pb-8 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-6xl font-display font-black mb-4 reveal">
+                    <span class="text-neon">ALL</span>
+                    <span class="text-cyber"> PROJECTS</span>
+                </h1>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto reveal">
+                    Explore my complete collection of creative works and digital experiences.
+                </p>
+            </div>
+            
+            <!-- Stats -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8 reveal">
+                <div class="card-glass rounded-xl px-6 py-4 text-center">
+                    <div class="text-2xl font-display font-bold text-neon">4</div>
+                    <div class="text-gray-400 text-sm">Projects</div>
+                </div>
+                <div class="card-glass rounded-xl px-6 py-4 text-center">
+                    <div class="text-2xl font-display font-bold text-cyber">5+</div>
+                    <div class="text-gray-400 text-sm">Years Exp</div>
+                </div>
+                <div class="card-glass rounded-xl px-6 py-4 text-center">
+                    <div class="text-2xl font-display font-bold text-matrix">15+</div>
+                    <div class="text-gray-400 text-sm">Clients</div>
+                </div>
+            </div>
+            
+            <!-- Filter -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12 reveal">
+                <button class="filter-btn active" data-filter="all">ALL</button>
+                <button class="filter-btn" data-filter="3d">3D / WEBGL</button>
+                <button class="filter-btn" data-filter="web">WEB DESIGN</button>
+                <button class="filter-btn" data-filter="brand">BRANDING</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="pb-20 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto" id="projectsGrid">
+                
+                <!-- Project 1 -->
+                <a href="project.html?id=ecommerce" class="project-card h-80 reveal" data-category="web">
+                    <img src="IMAGES/Ecommerce.png" alt="E-Commerce" class="w-full h-full object-cover">
+                    <div class="project-overlay">
+                        <div class="project-content">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-3 py-1 border rounded-full text-xs tag-neon">3D</span>
+                                <span class="px-3 py-1 border rounded-full text-xs tag-cyber">WEB</span>
+                            </div>
+                            <h3 class="text-xl font-display font-bold text-white mb-2">E-COMMERCE PLATFORM</h3>
+                            <p class="text-gray-400 text-sm">Interactive shopping experience</p>
+                        </div>
+                    </div>
+                    <div class="project-icon icon-neon">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+                
+                <!-- Project 2 -->
+                <a href="project.html?id=tesla" class="project-card h-80 reveal" data-category="3d">
+                    <img src="IMAGES/carTesla.png" alt="Tesla" class="w-full h-full object-cover">
+                    <div class="project-overlay">
+                        <div class="project-content">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-3 py-1 border rounded-full text-xs tag-cyber">3D</span>
+                                <span class="px-3 py-1 border rounded-full text-xs tag-matrix">SHOWCASE</span>
+                            </div>
+                            <h3 class="text-xl font-display font-bold text-white mb-2">TESLA CAR SHOWCASE</h3>
+                            <p class="text-gray-400 text-sm">Interactive 3D car visualization</p>
+                        </div>
+                    </div>
+                    <div class="project-icon icon-cyber">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+                
+                <!-- Project 3 -->
+                <a href="project.html?id=nike" class="project-card h-80 reveal" data-category="web">
+                    <img src="IMAGES/nike-proj.png" alt="Nike" class="w-full h-full object-cover">
+                    <div class="project-overlay">
+                        <div class="project-content">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-3 py-1 border rounded-full text-xs tag-matrix">E-COMMERCE</span>
+                                <span class="px-3 py-1 border rounded-full text-xs tag-glow">BRAND</span>
+                            </div>
+                            <h3 class="text-xl font-display font-bold text-white mb-2">NIKE EXPERIENCE</h3>
+                            <p class="text-gray-400 text-sm">Product showcase with animations</p>
+                        </div>
+                    </div>
+                    <div class="project-icon icon-matrix">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+                
+                <!-- Project 4 -->
+                <a href="project.html?id=cafe" class="project-card h-80 reveal" data-category="brand">
+                    <img src="IMAGES/Screenshot 2026-01-15 164023.png" alt="Cafe" class="w-full h-full object-cover">
+                    <div class="project-overlay">
+                        <div class="project-content">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-3 py-1 border rounded-full text-xs tag-glow">BRANDING</span>
+                                <span class="px-3 py-1 border rounded-full text-xs tag-neon">WEB</span>
+                            </div>
+                            <h3 class="text-xl font-display font-bold text-white mb-2">ORTA CAFE</h3>
+                            <p class="text-gray-400 text-sm">Full website design</p>
+                        </div>
+                    </div>
+                    <div class="project-icon icon-glow">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-800/50">
+        <div class="container mx-auto px-4 text-center">
+            <div class="text-lg font-display font-bold">
+                Haitham <span class="text-neon">.</span>Ali
+            </div>
+            <p class="text-gray-500 text-sm mt-1">Creative Developer</p>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal animation on scroll
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 80) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+
+
+  
+
+        
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+        
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projects = document.querySelectorAll('.project-card');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                
+                projects.forEach(project => {
+                    if (filter === 'all' || project.dataset.category === filter) {
+                        project.style.display = 'block';
+                        setTimeout(() => {
+                            project.style.opacity = '1';
+                            project.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        project.style.opacity = '0';
+                        project.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            project.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+
+// Check if coming from back button (page already loaded before)
+if (document.readyState === 'complete') {
+    document.getElementById('loader').classList.add('hidden');
+    initAnimations();
+} else {
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            document.getElementById('loader').classList.add('hidden');
+            initAnimations();
+        }, 1500);
+    });
+}
+
+// Hide loader immediately when returning via back button
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+        document.getElementById('loader').classList.add('hidden');
+    }
+});
+
+
+    </script>
+</body>
+</html>

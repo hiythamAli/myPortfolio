@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haitham Ali | Full-Stack Developer & Designer</title>
+    <meta name="description"
+        content="Full-Stack Developer & Designer specializing in Web Development, Mobile Apps, and Graphic Design">
+    <meta name="keywords" content="web developer, mobile developer, graphic designer, UI/UX, full-stack">
+    <meta name="author" content="Haitham Ali">
+
+    <meta property="og:title" content="Haitham Ali | Full-Stack Developer & Designer">
+    <meta property="og:description"
+        content="Full-Stack Developer & Designer specializing in Web Development, Mobile Apps, and Graphic Design">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neon: "#00ff9d",
+                        cyber: "#7700ff",
+                        matrix: "#00ff41",
+                        dark: "#0a0a0a",
+                        glow: "#ff00ff",
+                        light: "#f5f5f5"
+                    },
+                    fontFamily: {
+                        'mono': ['"Space Mono"', 'monospace'],
+                        'sans': ['"Inter"', 'sans-serif'],
+                        'display': ['"Orbitron"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        body.light-mode {
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        /* ============================================
+           LOADING SCREEN
+        ============================================ */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader-wrapper.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .loader-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top-color: #00ff9d;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .loader-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-top-color: #7700ff;
+            animation-duration: 1.2s;
+            animation-direction: reverse;
+        }
+
+        .loader-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top-color: #ff00ff;
+            animation-duration: 0.9s;
+        }
+
+        .loader-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            color: #00ff9d;
+            letter-spacing: 2px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ============================================
+           BACKGROUND ELEMENTS
+        ============================================ */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body.light-mode .grid-overlay {
+            background-image:
+                linear-gradient(rgba(119, 0, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(119, 0, 255, 0.05) 1px, transparent 1px);
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: floatParticle 10s ease-in-out infinite;
+        }
+
+        @keyframes floatParticle {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.3;
+            }
+
+            25% {
+                transform: translateY(-30px) translateX(15px);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translateY(-60px) translateX(-10px);
+                opacity: 0.4;
+            }
+
+            75% {
+                transform: translateY(-30px) translateX(20px);
+                opacity: 0.6;
+            }
+        }
+
+        /* ============================================
+           NAVBAR - GLASS EFFECT
+        ============================================ */
+        .nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .nav-wrapper.scrolled {
+            background: rgba(10, 10, 10, 0.8);
+            border-bottom-color: rgba(0, 255, 157, 0.2);
+        }
+
+        body.light-mode .nav-wrapper {
+            background: rgba(245, 245, 245, 0.3);
+            border-bottom-color: rgba(119, 0, 255, 0.1);
+        }
+
+        body.light-mode .nav-wrapper.scrolled {
+            background: rgba(245, 245, 245, 0.8);
+            border-bottom-color: rgba(119, 0, 255, 0.2);
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 255, 157, 0.1);
+        }
+
+        body.light-mode .nav-link:hover {
+            background: rgba(119, 0, 255, 0.1);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #00ff9d, #00cc7a);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 2px 10px rgba(0, 255, 157, 0.5);
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.1);
+            border-color: rgba(119, 0, 255, 0.3);
+        }
+
+        body.light-mode .theme-toggle::after {
+            left: 26px;
+            background: linear-gradient(135deg, #7700ff, #9900ff);
+            box-shadow: 0 2px 10px rgba(119, 0, 255, 0.5);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 150;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            z-index: 200;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: #00ff9d;
+            position: absolute;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 0;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 9px;
+        }
+
+        .hamburger span:nth-child(3) {
+            bottom: 0;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg);
+            top: 9px;
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg);
+            bottom: 9px;
+        }
+
+        /* ============================================
+           HERO SECTION
+        ============================================ */
+        .hero-title-line {
+            overflow: hidden;
+            display: block;
+        }
+
+        .hero-title-text {
+            display: inline-block;
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .morphing-blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.15), rgba(119, 0, 255, 0.15));
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morph 8s ease-in-out infinite, float-blob 6s ease-in-out infinite;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        @keyframes morph {
+
+            0%,
+            100% {
+                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            }
+
+            25% {
+                border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+            }
+
+            50% {
+                border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+            }
+
+            75% {
+                border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%;
+            }
+        }
+
+        @keyframes float-blob {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            33% {
+                transform: translate(30px, -30px);
+            }
+
+            66% {
+                transform: translate(-20px, 20px);
+            }
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: #00ff9d;
+            animation: blink-cursor 1s step-end infinite;
+        }
+
+        @keyframes blink-cursor {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Floating Stats */
+        .floating-stat {
+            animation: float-stat 4s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .floating-stat:hover {
+            animation-play-state: paused;
+            transform: scale(1.1) !important;
+        }
+
+        @keyframes float-stat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Data Stream */
+        .data-stream {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .data-stream-content {
+            display: inline-block;
+            animation: stream-scroll 25s linear infinite;
+        }
+
+        @keyframes stream-scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* ============================================
+           BUTTONS
+        ============================================ */
+        .btn-cyber {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-cyber::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-cyber:hover::before {
+            left: 100%;
+        }
+
+        .btn-cyber:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
+        }
+
+        /* Liquid Button */
+        .btn-liquid {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .btn-liquid .liquid {
+            position: absolute;
+            left: 50%;
+            top: -80px;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #00ff9d, #00cc7a);
+            box-shadow: inset 0 0 50px rgba(0, 255, 157, 0.5);
+            border-radius: 45% 35% 55% 65% / 55% 45% 65% 55%;
+            transition: 0.5s;
+            animation: liquidRotate 8s linear infinite;
+            z-index: 1;
+            transform: translateX(-50%);
+        }
+
+        .btn-liquid:hover .liquid {
+            top: -150px;
+        }
+
+        @keyframes liquidRotate {
+            0% {
+                transform: translateX(-50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translateX(-50%) rotate(360deg);
+            }
+        }
+
+        .btn-liquid span {
+            position: relative;
+            z-index: 2;
+            transition: 0.5s;
+        }
+
+        .btn-liquid:hover span {
+            color: #0a0a0a;
+        }
+
+        /* Download Button */
+        .btn-download {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 255, 157, 0.4);
+        }
+
+        /* View All Button */
+        .btn-view-all {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-view-all::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(119, 0, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-view-all:hover::before {
+            left: 100%;
+        }
+
+        .btn-view-all:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(119, 0, 255, 0.4);
+        }
+
+        .btn-view-all:hover i {
+            transform: translateX(8px);
+        }
+
+        .btn-view-all i {
+            transition: transform 0.3s ease;
+        }
+
+        /* ============================================
+           CARDS
+        ============================================ */
+        .card-holographic {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 157, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-holographic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .card-holographic:hover::before {
+            left: 100%;
+        }
+
+        .card-holographic:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 255, 157, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.1);
+        }
+
+        body.light-mode .card-holographic {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(119, 0, 255, 0.1);
+        }
+
+        body.light-mode .card-holographic:hover {
+            border-color: rgba(119, 0, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(119, 0, 255, 0.1);
+        }
+
+        /* Skill Bar */
+        .skill-bar {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-bar-fill {
+            position: relative;
+            height: 100%;
+            border-radius: inherit;
+            transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .skill-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* ============================================
+           PROJECT CARDS
+        ============================================ */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            cursor: pointer;
+        }
+
+        .project-card-inner {
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover .project-card-inner {
+            transform: scale(1.05);
+        }
+
+        .project-card img {
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.1);
+            filter: brightness(0.7);
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.4) 50%, transparent 100%);
+            opacity: 0;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 25px;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-content {
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.4s ease 0.1s;
+        }
+
+        .project-card:hover .project-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .project-tag {
+            transition: all 0.3s ease;
+        }
+
+        .project-tag:hover {
+            transform: scale(1.1);
+        }
+
+        .project-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(-20px) scale(0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
+        }
+
+        .project-card:hover .project-icon {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* ============================================
+           ABOUT SECTION
+        ============================================ */
+        .about-image-wrapper {
+            position: relative;
+        }
+
+        .about-image-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: linear-gradient(135deg, #00ff9d, #7700ff, #ff00ff);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.5;
+            animation: rotate-gradient 4s linear infinite;
+        }
+
+        @keyframes rotate-gradient {
+            0% {
+                filter: hue-rotate(0deg);
+            }
+
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .tool-item {
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover {
+            transform: translateX(10px);
+            border-color: #00ff9d !important;
+            background: rgba(0, 255, 157, 0.05) !important;
+        }
+
+        body.light-mode .tool-item:hover {
+            border-color: #7700ff !important;
+            background: rgba(119, 0, 255, 0.05) !important;
+        }
+
+        /* ============================================
+           SERVICES CARDS
+        ============================================ */
+        .service-card {
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: rotateY(360deg);
+        }
+
+        /* ============================================
+           TESTIMONIALS
+        ============================================ */
+        .testimonial-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-quote {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 80px;
+            font-family: serif;
+            line-height: 1;
+            opacity: 0.1;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover .testimonial-quote {
+            opacity: 0.2;
+            transform: scale(1.1);
+        }
+
+        .testimonial-nav-btn {
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-nav-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .testimonial-dot {
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-dot.active {
+            transform: scale(1.4);
+        }
+
+        /* ============================================
+           TIMELINE
+        ============================================ */
+        .timeline-item {
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: translateX(-50%) scale(1.4);
+            box-shadow: 0 0 25px currentColor;
+        }
+
+        .timeline-content {
+            transition: all 0.4s ease;
+        }
+
+        .timeline-item:hover .timeline-content {
+            transform: scale(1.02);
+        }
+
+        /* ============================================
+           CONTACT FORM
+        ============================================ */
+        .form-input {
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            transform: translateX(5px);
+            border-color: #00ff9d !important;
+        }
+
+        .social-link {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .social-link:hover {
+            transform: translateY(-8px) rotate(10deg);
+        }
+
+        /* ============================================
+           SCROLL ANIMATIONS
+        ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 0.5s ease;
+        }
+
+        .stagger-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 1024px) {
+            .timeline-line {
+                left: 30px !important;
+            }
+
+            .timeline-dot {
+                left: 30px !important;
+            }
+
+            .timeline-item .lg\:w-1\/2 {
+                width: 100% !important;
+                padding-left: 60px !important;
+                padding-right: 0 !important;
+                text-align: left !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .morphing-blob {
+                width: 250px !important;
+                height: 250px !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans">
+    <!-- Loading Screen -->
+    <div class="loader-wrapper" id="loader">
+        <div class="loader">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-text">LOADING</div>
+        </div>
+    </div>
+
+    <!-- Background -->
+    <div class="grid-overlay"></div>
+    <div class="floating-particles" id="particles"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="hamburger active" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <a href="#hero" onclick="toggleMobileMenu()">HOME</a>
+        <a href="#about" onclick="toggleMobileMenu()">ABOUT</a>
+        <a href="#skills" onclick="toggleMobileMenu()">SKILLS</a>
+        <a href="#services" onclick="toggleMobileMenu()">SERVICES</a>
+        <a href="#projects" onclick="toggleMobileMenu()">PROJECTS</a>
+        <a href="#testimonials" onclick="toggleMobileMenu()">REVIEWS</a>
+        <a href="#contact" onclick="toggleMobileMenu()">CONTACT</a>
+        <div class="theme-toggle mt-4" onclick="toggleTheme()"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-wrapper py-4" id="navbar">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+            <a href="#"
+                class="text-xl md:text-2xl font-display font-bold text-white hover:text-neon transition-colors duration-300">
+                Haitham<span class="text-neon">.</span>Ali
+            </a>
+
+            <div class="hidden lg:flex items-center gap-6">
+                <a href="#hero" class="nav-link text-gray-300 hover:text-neon font-mono text-sm tracking-wider">HOME</a>
+                <a href="#about"
+                    class="nav-link text-gray-300 hover:text-cyber font-mono text-sm tracking-wider">ABOUT</a>
+                <a href="#skills"
+                    class="nav-link text-gray-300 hover:text-matrix font-mono text-sm tracking-wider">SKILLS</a>
+                <a href="#services"
+                    class="nav-link text-gray-300 hover:text-glow font-mono text-sm tracking-wider">SERVICES</a>
+                <a href="#projects"
+                    class="nav-link text-gray-300 hover:text-neon font-mono text-sm tracking-wider">PROJECTS</a>
+                <a href="#testimonials"
+                    class="nav-link text-gray-300 hover:text-cyber font-mono text-sm tracking-wider">REVIEWS</a>
+                <a href="#contact"
+                    class="nav-link text-gray-300 hover:text-matrix font-mono text-sm tracking-wider">CONTACT</a>
+                <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme"></div>
+            </div>
+
+            <div class="flex items-center gap-4 lg:hidden">
+                <div class="theme-toggle hidden sm:block" onclick="toggleTheme()"></div>
+                <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen relative flex items-center overflow-hidden pt-20">
+        <div class="morphing-blob top-1/4 left-1/4 opacity-60 hidden lg:block"></div>
+        <div class="morphing-blob bottom-1/4 right-1/4 opacity-40 hidden lg:block" style="animation-delay: -3s;"></div>
+
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Left Content -->
+                <div class="order-2 lg:order-1">
+                    <div class="mb-4">
+                        <span class="text-lg md:text-xl text-gray-400 font-mono">Hello, I'm</span>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="hero-title-line">
+                            <span
+                                class="hero-title-text text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-black text-white">HAITHAM</span>
+                        </div>
+                        <div class="hero-title-line">
+                            <span
+                                class="hero-title-text text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-black text-neon ml-4 sm:ml-8">ALI</span>
+                        </div>
+                    </div>
+
+                    <!-- Job Titles -->
+                    <div class="mb-6 flex flex-wrap gap-3">
+                        <span
+                            class="px-4 py-2 bg-neon/10 border border-neon/30 rounded-full text-neon text-sm font-mono">Web
+                            Developer</span>
+                        <span
+                            class="px-4 py-2 bg-cyber/10 border border-cyber/30 rounded-full text-cyber text-sm font-mono">Mobile
+                            Developer</span>
+                        <span
+                            class="px-4 py-2 bg-matrix/10 border border-matrix/30 rounded-full text-matrix text-sm font-mono">Graphic
+                            Designer</span>
+                    </div>
+
+                    <!-- Typewriter -->
+                    <div class="mb-8 h-10">
+                        <span id="typewriter" class="text-xl sm:text-2xl md:text-3xl font-mono text-neon"></span>
+                        <span class="terminal-cursor"></span>
+                    </div>
+
+                    <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-xl leading-relaxed">
+                        I transform ideas into powerful digital products. From responsive websites to mobile apps and
+                        stunning visual designs — I deliver quality solutions that drive results.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 mb-8">
+                        <a href="#projects"
+                            class="btn-cyber px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-cyber text-cyber font-display font-semibold hover:bg-cyber hover:text-white text-sm sm:text-base">
+                            EXPLORE WORK
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+
+                        <button class="btn-liquid border-2 border-neon rounded-full"
+                            onclick="window.location.href='#contact'">
+                            <div class="liquid"></div>
+                            <span class="px-6 sm:px-8 py-3 sm:py-4 font-display font-semibold text-neon">HIRE ME</span>
+                        </button>
+
+                        <a href="cv.pdf" download
+                            class="btn-download flex items-center gap-2 px-6 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-neon to-green-400 text-dark font-display font-semibold text-sm sm:text-base">
+                            <i class="fas fa-download"></i>
+                            <span>CV</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Content -->
+                <div class="order-1 lg:order-2 relative flex justify-center">
+                    <div class="relative w-64 h-72 sm:w-72 sm:h-80 md:w-80 md:h-96">
+                        <div class="absolute inset-0 rounded-2xl overflow-hidden card-holographic">
+                            <img src="IMAGES/WhatsApp Image 2026-01-15 at 14.59.07_2083e6aa.jpg" alt="Haitham Ali"
+                                class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/50 to-transparent"></div>
+                        </div>
+
+                        <!-- Floating Stats -->
+                        <div class="floating-stat absolute -top-4 -right-4 bg-dark/90 backdrop-blur border border-neon/50 rounded-xl p-3 sm:p-4"
+                            style="animation-delay: 0s;">
+                            <div class="text-neon text-2xl sm:text-3xl font-display font-black">50+</div>
+                            <div class="text-gray-400 text-xs sm:text-sm">PROJECTS</div>
+                        </div>
+
+                        <div class="floating-stat absolute -bottom-4 -left-4 bg-dark/90 backdrop-blur border border-cyber/50 rounded-xl p-3 sm:p-4"
+                            style="animation-delay: 0.5s;">
+                            <div class="text-cyber text-2xl sm:text-3xl font-display font-black">4+</div>
+                            <div class="text-gray-400 text-xs sm:text-sm">YEARS EXP</div>
+                        </div>
+
+                        <div class="floating-stat absolute top-1/2 -right-8 bg-dark/90 backdrop-blur border border-matrix/50 rounded-xl p-3 hidden sm:block"
+                            style="animation-delay: 1s;">
+                            <div class="text-matrix text-xl font-display font-black">30+</div>
+                            <div class="text-gray-400 text-xs">CLIENTS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Stream -->
+        <div class="absolute bottom-0 left-0 w-full py-4 overflow-hidden">
+            <div class="data-stream">
+                <div class="data-stream-content text-lg sm:text-xl font-mono">
+                    <span class="text-neon">WEB_DEV</span>
+                    <span class="text-cyber">MOBILE_DEV</span>
+                    <span class="text-matrix">UI_UX</span>
+                    <span class="text-glow">GRAPHIC</span>
+                    <span class="text-neon">REACT</span>
+                    <span class="text-cyber">FLUTTER</span>
+                    <span class="text-matrix">FIGMA</span>
+                    <span class="text-glow">KOTLIN</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 md:py-32 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-black reveal">
+                    <span class="text-neon">ABOUT</span>
+                    <span class="text-white"> ME</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto">
+                <!-- Image -->
+                <div class="reveal-left">
+                    <div class="about-image-wrapper max-w-md mx-auto rounded-2xl overflow-hidden">
+                        <img src="IMAGES/WhatsApp Image 2026-01-15 at 14.59.07_2083e6aa.jpg" alt="About Haitham"
+                            class="w-full relative z-10">
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="reveal-right">
+                    <h3 class="text-2xl md:text-3xl font-display font-bold mb-6">
+                        <span class="text-neon">Full-Stack Developer</span>
+                        <span class="text-white"> & Designer</span>
+                    </h3>
+
+                    <p class="text-gray-400 mb-6 leading-relaxed text-lg">
+                        I'm <span class="text-neon font-semibold">Haitham Ali</span>, a passionate multidisciplinary
+                        professional specializing in building exceptional digital experiences. With expertise spanning
+                        web development, mobile applications, and graphic design, I bring ideas to life through code and
+                        creativity.
+                    </p>
+
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        My approach focuses on user experience and quality execution. I believe in creating products
+                        that not only look stunning but also perform flawlessly. From concept to deployment, I ensure
+                        every project meets the highest standards.
+                    </p>
+
+                    <!-- Expertise Areas -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                        <div class="card-holographic rounded-xl p-4 text-center">
+                            <i class="fas fa-code text-neon text-2xl mb-2"></i>
+                            <h4 class="font-display font-bold text-white text-sm">Web Development</h4>
+                            <p class="text-gray-500 text-xs mt-1">Frontend & Backend</p>
+                        </div>
+                        <div class="card-holographic rounded-xl p-4 text-center">
+                            <i class="fas fa-mobile-alt text-cyber text-2xl mb-2"></i>
+                            <h4 class="font-display font-bold text-white text-sm">Mobile Apps</h4>
+                            <p class="text-gray-500 text-xs mt-1">Android & Cross-platform</p>
+                        </div>
+                        <div class="card-holographic rounded-xl p-4 text-center">
+                            <i class="fas fa-palette text-matrix text-2xl mb-2"></i>
+                            <h4 class="font-display font-bold text-white text-sm">Graphic Design</h4>
+                            <p class="text-gray-500 text-xs mt-1">Branding & Visual</p>
+                        </div>
+                    </div>
+
+                    <!-- Tools -->
+                    <h4 class="text-lg font-display font-bold text-cyber mb-4">TOOLS & TECHNOLOGIES</h4>
+                    <div class="grid grid-cols-2 gap-3 mb-8">
+                        <div class="tool-item flex items-center gap-3 p-3 rounded-xl border border-gray-800 bg-dark/30">
+                            <i class="fab fa-html5 text-orange-500 text-xl"></i>
+                            <span class="text-gray-300 text-sm">HTML / CSS / JS</span>
+                        </div>
+                        <div class="tool-item flex items-center gap-3 p-3 rounded-xl border border-gray-800 bg-dark/30">
+                            <i class="fab fa-react text-cyan-400 text-xl"></i>
+                            <span class="text-gray-300 text-sm">React / Next.js</span>
+                        </div>
+                        <div class="tool-item flex items-center gap-3 p-3 rounded-xl border border-gray-800 bg-dark/30">
+                            <i class="fab fa-android text-green-500 text-xl"></i>
+                            <span class="text-gray-300 text-sm">Kotlin / Android</span>
+                        </div>
+                        <div class="tool-item flex items-center gap-3 p-3 rounded-xl border border-gray-800 bg-dark/30">
+                            <i class="fas fa-feather text-cyan-500 text-xl"></i>
+                            <span class="text-gray-300 text-sm">Flutter</span>
+                        </div>
+                        <div class="tool-item flex items-center gap-3 p-3 rounded-xl border border-gray-800 bg-dark/30">
+                            <i class="fab fa-figma text-pink-500 text-xl"></i>
+                            <span class="text-gray-300 text-sm">Figma / Adobe XD</span>
+                        </div>
+                        <div class="tool-item flex items-center gap-3 p-3 rounded-xl border border-gray-800 bg-dark/30">
+                            <i class="fab fa-git-alt text-orange-600 text-xl"></i>
+                            <span class="text-gray-300 text-sm">Git / GitHub</span>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="card-holographic rounded-xl p-4 text-center stagger-item">
+                            <div class="text-2xl sm:text-3xl font-display font-black text-neon">4+</div>
+                            <div class="text-gray-400 text-xs sm:text-sm">Years</div>
+                        </div>
+                        <div class="card-holographic rounded-xl p-4 text-center stagger-item">
+                            <div class="text-2xl sm:text-3xl font-display font-black text-cyber">50+</div>
+                            <div class="text-gray-400 text-xs sm:text-sm">Projects</div>
+                        </div>
+                        <div class="card-holographic rounded-xl p-4 text-center stagger-item">
+                            <div class="text-2xl sm:text-3xl font-display font-black text-matrix">30+</div>
+                            <div class="text-gray-400 text-xs sm:text-sm">Clients</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 md:py-32 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-black reveal">
+                    <span class="text-neon">PROFESSIONAL</span>
+                    <span class="text-cyber"> SKILLS</span>
+                </h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto reveal">Expertise across multiple domains to deliver
+                    complete digital solutions</p>
+            </div>
+
+            <!-- Web Development Skills -->
+            <div class="mb-16">
+                <div class="flex items-center gap-3 mb-8 reveal">
+                    <div class="w-12 h-12 rounded-xl bg-neon/10 border border-neon/30 flex items-center justify-center">
+                        <i class="fas fa-code text-neon text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Web Development</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">HTML / CSS</h4>
+                            <span class="text-neon font-mono text-sm">95%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-neon to-green-400 rounded-full"
+                                data-width="95%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Semantic markup, responsive layouts, CSS animations</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">JavaScript</h4>
+                            <span class="text-neon font-mono text-sm">90%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-neon to-cyan-400 rounded-full"
+                                data-width="90%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">ES6+, DOM manipulation, async programming</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">React / Next.js</h4>
+                            <span class="text-cyber font-mono text-sm">88%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-cyber to-purple-400 rounded-full"
+                                data-width="88%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Component architecture, hooks, SSR/SSG</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Responsive Design</h4>
+                            <span class="text-neon font-mono text-sm">92%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-neon to-green-400 rounded-full"
+                                data-width="92%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Mobile-first approach, cross-browser compatibility</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Performance</h4>
+                            <span class="text-cyber font-mono text-sm">85%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-cyber to-purple-400 rounded-full"
+                                data-width="85%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Optimization, lazy loading, code splitting</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Design to Code</h4>
+                            <span class="text-neon font-mono text-sm">94%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-neon to-green-400 rounded-full"
+                                data-width="94%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Pixel-perfect implementation, design systems</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Development Skills -->
+            <div class="mb-16">
+                <div class="flex items-center gap-3 mb-8 reveal">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-cyber/10 border border-cyber/30 flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-cyber text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Mobile Development</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Kotlin</h4>
+                            <span class="text-cyber font-mono text-sm">88%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-cyber to-purple-400 rounded-full"
+                                data-width="88%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Native Android development, coroutines</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Flutter</h4>
+                            <span class="text-neon font-mono text-sm">82%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-neon to-cyan-400 rounded-full"
+                                data-width="82%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Cross-platform apps, Dart, widgets</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">UI/UX for Mobile</h4>
+                            <span class="text-matrix font-mono text-sm">90%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-matrix to-green-300 rounded-full"
+                                data-width="90%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Material Design, adaptive layouts</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">API Integration</h4>
+                            <span class="text-cyber font-mono text-sm">86%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-cyber to-purple-400 rounded-full"
+                                data-width="86%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">REST APIs, GraphQL, authentication</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">App Architecture</h4>
+                            <span class="text-neon font-mono text-sm">84%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-neon to-green-400 rounded-full"
+                                data-width="84%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">MVVM, clean architecture, state management</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Graphic Design Skills -->
+            <div>
+                <div class="flex items-center gap-3 mb-8 reveal">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-matrix/10 border border-matrix/30 flex items-center justify-center">
+                        <i class="fas fa-palette text-matrix text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white">Graphic Design</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Logo Design</h4>
+                            <span class="text-matrix font-mono text-sm">92%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-matrix to-green-300 rounded-full"
+                                data-width="92%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Brand marks, wordmarks, emblems</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Social Media</h4>
+                            <span class="text-glow font-mono text-sm">90%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-glow to-pink-400 rounded-full"
+                                data-width="90%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Posts, stories, covers, ads</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Brand Identity</h4>
+                            <span class="text-matrix font-mono text-sm">88%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-matrix to-green-300 rounded-full"
+                                data-width="88%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Visual identity systems, style guides</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">Print Design</h4>
+                            <span class="text-glow font-mono text-sm">85%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-glow to-pink-400 rounded-full"
+                                data-width="85%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Brochures, magazines, business cards</p>
+                    </div>
+
+                    <div class="card-holographic rounded-2xl p-6 reveal">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-display font-bold text-white">UI Design</h4>
+                            <span class="text-neon font-mono text-sm">91%</span>
+                        </div>
+                        <div class="skill-bar h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div class="skill-bar-fill bg-gradient-to-r from-neon to-cyan-400 rounded-full"
+                                data-width="91%"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3">Web & app interfaces, prototyping</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 md:py-32 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-black reveal">
+                    <span class="text-glow">SERVICES</span>
+                    <span class="text-white"> I OFFER</span>
+                </h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto reveal">Comprehensive digital solutions tailored to your
+                    needs</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Web Development -->
+                <div class="service-card card-holographic rounded-2xl p-8 reveal">
+                    <div
+                        class="service-icon w-16 h-16 rounded-2xl bg-neon/10 border border-neon/30 flex items-center justify-center mb-6">
+                        <i class="fas fa-globe text-neon text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">Web Development</h3>
+                    <p class="text-gray-400 mb-4">Build fast, responsive, and modern websites using cutting-edge
+                        technologies. From landing pages to complex web applications.</p>
+                    <ul class="text-gray-500 text-sm space-y-2">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-neon"></i> Custom websites</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-neon"></i> E-commerce solutions
+                        </li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-neon"></i> Web applications</li>
+                    </ul>
+                </div>
+
+                <!-- UI/UX Design -->
+                <div class="service-card card-holographic rounded-2xl p-8 reveal">
+                    <div
+                        class="service-icon w-16 h-16 rounded-2xl bg-cyber/10 border border-cyber/30 flex items-center justify-center mb-6">
+                        <i class="fas fa-object-group text-cyber text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">UI/UX Design</h3>
+                    <p class="text-gray-400 mb-4">Design intuitive and beautiful interfaces that users love. Focus on
+                        user experience and visual appeal.</p>
+                    <ul class="text-gray-500 text-sm space-y-2">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyber"></i> Website design</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyber"></i> App interfaces</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyber"></i> Prototyping</li>
+                    </ul>
+                </div>
+
+                <!-- Mobile Apps -->
+                <div class="service-card card-holographic rounded-2xl p-8 reveal">
+                    <div
+                        class="service-icon w-16 h-16 rounded-2xl bg-matrix/10 border border-matrix/30 flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-matrix text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">Mobile Development</h3>
+                    <p class="text-gray-400 mb-4">Create powerful mobile applications for Android platform. Native and
+                        cross-platform solutions.</p>
+                    <ul class="text-gray-500 text-sm space-y-2">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-matrix"></i> Android apps
+                            (Kotlin)</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-matrix"></i> Cross-platform
+                            (Flutter)</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-matrix"></i> App UI design</li>
+                    </ul>
+                </div>
+
+                <!-- Logo Design -->
+                <div class="service-card card-holographic rounded-2xl p-8 reveal">
+                    <div
+                        class="service-icon w-16 h-16 rounded-2xl bg-glow/10 border border-glow/30 flex items-center justify-center mb-6">
+                        <i class="fas fa-pen-nib text-glow text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">Logo Design</h3>
+                    <p class="text-gray-400 mb-4">Craft memorable logos that represent your brand identity. Unique and
+                        timeless designs.</p>
+                    <ul class="text-gray-500 text-sm space-y-2">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-glow"></i> Brand marks</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-glow"></i> Wordmarks</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-glow"></i> Logo variations</li>
+                    </ul>
+                </div>
+
+                <!-- Brand Identity -->
+                <div class="service-card card-holographic rounded-2xl p-8 reveal">
+                    <div
+                        class="service-icon w-16 h-16 rounded-2xl bg-neon/10 border border-neon/30 flex items-center justify-center mb-6">
+                        <i class="fas fa-fingerprint text-neon text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">Brand Identity</h3>
+                    <p class="text-gray-400 mb-4">Build complete visual identity systems that make your brand stand out
+                        from the competition.</p>
+                    <ul class="text-gray-500 text-sm space-y-2">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-neon"></i> Style guides</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-neon"></i> Color palettes</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-neon"></i> Typography</li>
+                    </ul>
+                </div>
+
+                <!-- Social Media -->
+                <div class="service-card card-holographic rounded-2xl p-8 reveal">
+                    <div
+                        class="service-icon w-16 h-16 rounded-2xl bg-cyber/10 border border-cyber/30 flex items-center justify-center mb-6">
+                        <i class="fas fa-share-alt text-cyber text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">Social Media Design</h3>
+                    <p class="text-gray-400 mb-4">Create engaging social media content that captures attention and
+                        drives engagement.</p>
+                    <ul class="text-gray-500 text-sm space-y-2">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyber"></i> Post designs</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyber"></i> Story templates</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-cyber"></i> Ad creatives</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 md:py-32 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-black reveal">
+                    <span class="text-cyber">FEATURED</span>
+                    <span class="text-neon"> PROJECTS</span>
+                </h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto reveal">A selection of my best work across different
+                    domains</p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12 reveal">
+                <button
+                    class="filter-btn active px-5 py-2 rounded-lg border border-neon/30 text-sm font-mono text-neon bg-neon/10"
+                    data-filter="all">ALL</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-lg border border-gray-700 text-sm font-mono text-gray-400 hover:border-neon hover:text-neon"
+                    data-filter="web">WEB</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-lg border border-gray-700 text-sm font-mono text-gray-400 hover:border-cyber hover:text-cyber"
+                    data-filter="mobile">MOBILE</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-lg border border-gray-700 text-sm font-mono text-gray-400 hover:border-matrix hover:text-matrix"
+                    data-filter="design">DESIGN</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
+                <!-- Web Project 1 -->
+                <a href="project.html?id=ecommerce" class="project-card h-80 reveal" data-category="web">
+                    <div class="project-card-inner w-full h-full">
+                        <img src="IMAGES/Ecommerce.png" alt="E-Commerce" class="w-full h-full object-cover">
+                    </div>
+                    <div class="project-overlay">
+                        <div class="project-content">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span
+                                    class="project-tag px-3 py-1 bg-neon/20 border border-neon/50 rounded-full text-neon text-xs">WEB</span>
+                                <span
+                                    class="project-tag px-3 py-1 bg-cyber/20 border border-cyber/50 rounded-full text-cyber text-xs">E-COMMERCE</span>
+                            </div>
+                            <h3 class="text-2xl font-display font-bold text-white mb-2">E-COMMERCE PLATFORM</h3>
+                            <p class="text-gray-400 text-sm">Full-stack online store with payment integration</p>
+                        </div>
+                    </div>
+                    <div class="project-icon bg-neon/20 border border-neon text-neon">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+
+                <!-- Web Project 2 -->
+                <a href="project.html?id=tesla" class="project-card h-80 reveal" data-category="web">
+                    <div class="project-card-inner w-full h-full">
+                        <img src="IMAGES/carTesla.png" alt="Tesla" class="w-full h-full object-cover">
+                    </div>
+                    <div class="project-overlay">
+                        <div class="project-content">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span
+                                    class="project-tag px-3 py-1 bg-cyber/20 border border-cyber/50 rounded-full text-cyber text-xs">WEB</span>
+                                <span
+                                    class="project-tag px-3 py-1 bg-matrix/20 border border-matrix/50 rounded-full text-matrix text-xs">3D</span>
+                            </div>
+                            <h3 class="text-2xl font-display font-bold text-white mb-2">TESLA SHOWCASE</h3>
+                            <p class="text-gray-400 text-sm">Interactive 3D car visualization</p>
+                        </div>
+                    </div>
+                    <div class="project-icon bg-cyber/20 border border-cyber text-cyber">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+
+                <!-- Web Project 3 -->
+                <a href="project.html?id=nike" class="project-card h-80 reveal" data-category="web">
+                    <div class="project-card-inner w-full h-full">
+                        <img src="IMAGES/nike-proj.png" alt="Nike" class="w-full h-full object-cover">
+                    </div>
+                    <div class="project-overlay">
+                        <div class="project-content">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span
+                                    class="project-tag px-3 py-1 bg-matrix/20 border border-matrix/50 rounded-full text-matrix text-xs">WEB</span>
+                                <span
+                                    class="project-tag px-3 py-1 bg-glow/20 border border-glow/50 rounded-full text-glow text-xs">BRAND</span>
+                            </div>
+                            <h3 class="text-2xl font-display font-bold text-white mb-2">NIKE EXPERIENCE</h3>
+                            <p class="text-gray-400 text-sm">Product showcase with animations</p>
+                        </div>
+                    </div>
+                    <div class="project-icon bg-matrix/20 border border-matrix text-matrix">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+
+                <!-- Web Project 4 -->
+                <a href="project.html?id=cafe" class="project-card h-80 reveal" data-category="web">
+                    <div class="project-card-inner w-full h-full">
+                        <img src="IMAGES/Screenshot 2026-01-15 164023.png" alt="Cafe"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="project-overlay">
+                        <div class="project-content">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span
+                                    class="project-tag px-3 py-1 bg-glow/20 border border-glow/50 rounded-full text-glow text-xs">WEB</span>
+                                <span
+                                    class="project-tag px-3 py-1 bg-neon/20 border border-neon/50 rounded-full text-neon text-xs">BRANDING</span>
+                            </div>
+                            <h3 class="text-2xl font-display font-bold text-white mb-2">ORTA CAFE</h3>
+                            <p class="text-gray-400 text-sm">Complete website design & development</p>
+                        </div>
+                    </div>
+                    <div class="project-icon bg-glow/20 border border-glow text-glow">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+            </div>
+
+            <div class="flex justify-center mt-12">
+                <a href="all-projects.html"
+                    class="btn-view-all flex items-center gap-3 px-8 py-4 rounded-xl border-2 border-cyber text-cyber font-display font-semibold hover:bg-cyber hover:text-white">
+                    <span>VIEW ALL PROJECTS</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies Section -->
+    <section class="py-20 md:py-32 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-black reveal">
+                    <span class="text-matrix">CASE</span>
+                    <span class="text-glow"> STUDIES</span>
+                </h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto reveal">Deep dive into selected projects</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <!-- Case Study 1 -->
+                <div class="card-holographic rounded-2xl p-6 md:p-8 mb-8 reveal">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <span class="px-3 py-1 bg-neon/20 border border-neon/50 rounded-full text-neon text-xs">WEB
+                                DEVELOPMENT</span>
+                            <h3 class="text-2xl font-display font-bold text-white mt-4 mb-4">E-Commerce Platform</h3>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="text-neon font-mono text-sm mb-2">THE PROBLEM</h4>
+                                    <p class="text-gray-400 text-sm">Client needed a scalable online store with complex
+                                        product variations and multi-currency support.</p>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-cyber font-mono text-sm mb-2">THE SOLUTION</h4>
+                                    <p class="text-gray-400 text-sm">Built a custom React-based storefront with headless
+                                        CMS integration and Stripe payment processing.</p>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-matrix font-mono text-sm mb-2">THE RESULT</h4>
+                                    <p class="text-gray-400 text-sm">200% increase in conversion rate, 50% faster page
+                                        load times.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-xl overflow-hidden">
+                            <img src="IMAGES/Ecommerce.png" alt="Case Study" class="w-full h-64 object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Study 2 -->
+                <div class="card-holographic rounded-2xl p-6 md:p-8 reveal">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="order-2 lg:order-1 rounded-xl overflow-hidden">
+                            <img src="IMAGES/carTesla.png" alt="Case Study" class="w-full h-64 object-cover">
+                        </div>
+
+                        <div class="order-1 lg:order-2">
+                            <span
+                                class="px-3 py-1 bg-cyber/20 border border-cyber/50 rounded-full text-cyber text-xs">INTERACTIVE
+                                WEB</span>
+                            <h3 class="text-2xl font-display font-bold text-white mt-4 mb-4">Tesla 3D Showcase</h3>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="text-neon font-mono text-sm mb-2">THE PROBLEM</h4>
+                                    <p class="text-gray-400 text-sm">Showcase vehicles in an engaging way without
+                                        physical showrooms.</p>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-cyber font-mono text-sm mb-2">THE SOLUTION</h4>
+                                    <p class="text-gray-400 text-sm">Interactive 3D model viewer with real-time color
+                                        customization and 360° rotation.</p>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-matrix font-mono text-sm mb-2">THE RESULT</h4>
+                                    <p class="text-gray-400 text-sm">85% longer average session duration, featured in
+                                        design galleries.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 md:py-32 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-black reveal">
+                    <span class="text-matrix">CLIENT</span>
+                    <span class="text-glow"> REVIEWS</span>
+                </h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto reveal">What clients say about working with me</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto reveal">
+                <div class="relative">
+                    <div class="overflow-hidden">
+                        <div class="testimonial-track flex transition-transform duration-500" id="testimonialTrack">
+                            <!-- Testimonial 1 -->
+                            <div class="testimonial-slide min-w-full px-4">
+                                <div class="testimonial-card card-holographic rounded-2xl p-6 sm:p-8">
+                                    <span class="testimonial-quote text-neon">"</span>
+                                    <p
+                                        class="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 relative z-10 leading-relaxed">
+                                        Haitham delivered an exceptional e-commerce platform that exceeded our
+                                        expectations. His attention to detail and technical expertise made the entire
+                                        process smooth and professional.
+                                    </p>
+                                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                                        <div
+                                            class="w-14 h-14 rounded-full bg-neon/20 border border-neon/50 flex items-center justify-center">
+                                            <i class="fas fa-user text-neon text-xl"></i>
+                                        </div>
+                                        <div class="text-center sm:text-left">
+                                            <h4 class="font-display font-bold text-neon">AHMED MOHAMED</h4>
+                                            <p class="text-gray-400 text-sm">CEO, TechStore</p>
+                                        </div>
+                                        <div class="sm:ml-auto text-neon flex gap-1">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Testimonial 2 -->
+                            <div class="testimonial-slide min-w-full px-4">
+                                <div class="testimonial-card card-holographic rounded-2xl p-6 sm:p-8">
+                                    <span class="testimonial-quote text-cyber">"</span>
+                                    <p
+                                        class="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 relative z-10 leading-relaxed">
+                                        The mobile app Haitham built for us transformed our business. His understanding
+                                        of user experience and clean code resulted in a product our customers love.
+                                    </p>
+                                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                                        <div
+                                            class="w-14 h-14 rounded-full bg-cyber/20 border border-cyber/50 flex items-center justify-center">
+                                            <i class="fas fa-user text-cyber text-xl"></i>
+                                        </div>
+                                        <div class="text-center sm:text-left">
+                                            <h4 class="font-display font-bold text-cyber">SARAH ALI</h4>
+                                            <p class="text-gray-400 text-sm">Founder, AppStart</p>
+                                        </div>
+                                        <div class="sm:ml-auto text-cyber flex gap-1">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Testimonial 3 -->
+                            <div class="testimonial-slide min-w-full px-4">
+                                <div class="testimonial-card card-holographic rounded-2xl p-6 sm:p-8">
+                                    <span class="testimonial-quote text-matrix">"</span>
+                                    <p
+                                        class="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 relative z-10 leading-relaxed">
+                                        Working with Haitham on our brand identity was fantastic. He understood our
+                                        vision perfectly and delivered a cohesive visual identity that truly represents
+                                        our brand.
+                                    </p>
+                                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                                        <div
+                                            class="w-14 h-14 rounded-full bg-matrix/20 border border-matrix/50 flex items-center justify-center">
+                                            <i class="fas fa-user text-matrix text-xl"></i>
+                                        </div>
+                                        <div class="text-center sm:text-left">
+                                            <h4 class="font-display font-bold text-matrix">OMAR HASSAN</h4>
+                                            <p class="text-gray-400 text-sm">Owner, DesignHub</p>
+                                        </div>
+                                        <div class="sm:ml-auto text-matrix flex gap-1">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="flex justify-center items-center gap-6 mt-8">
+                        <button
+                            class="testimonial-nav-btn w-12 h-12 rounded-full border border-neon/30 text-neon hover:bg-neon hover:text-dark transition-all"
+                            onclick="prevSlide()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+
+                        <div class="flex gap-3">
+                            <div class="testimonial-dot w-3 h-3 rounded-full bg-neon/30 cursor-pointer active"
+                                onclick="goToSlide(0)"></div>
+                            <div class="testimonial-dot w-3 h-3 rounded-full bg-cyber/30 cursor-pointer"
+                                onclick="goToSlide(1)"></div>
+                            <div class="testimonial-dot w-3 h-3 rounded-full bg-matrix/30 cursor-pointer"
+                                onclick="goToSlide(2)"></div>
+                        </div>
+
+                        <button
+                            class="testimonial-nav-btn w-12 h-12 rounded-full border border-cyber/30 text-cyber hover:bg-cyber hover:text-white transition-all"
+                            onclick="nextSlide()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clients/Partners -->
+            <div class="mt-20 reveal">
+                <h3 class="text-center text-gray-400 font-mono text-sm mb-8">TRUSTED BY</h3>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                    <div class="text-2xl font-display font-bold text-gray-600 hover:text-neon transition-colors">
+                        TechStore</div>
+                    <div class="text-2xl font-display font-bold text-gray-600 hover:text-cyber transition-colors">
+                        AppStart</div>
+                    <div class="text-2xl font-display font-bold text-gray-600 hover:text-matrix transition-colors">
+                        DesignHub</div>
+                    <div class="text-2xl font-display font-bold text-gray-600 hover:text-glow transition-colors">
+                        StartupX</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-32 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-display font-black reveal">
+                    <span class="text-glow">LET'S</span>
+                    <span class="text-cyber"> CONNECT</span>
+                </h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto reveal">Have a project in mind? Let's create something
+                    amazing together</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Form -->
+                    <div class="card-holographic rounded-2xl p-6 sm:p-8 reveal-left">
+                        <form action="https://formsubmit.co/hiythamali69@gmail.com" method="POST" id="contactForm">
+                            <input type="hidden" name="_subject" value="New message from Portfolio!">
+                            <input type="hidden" name="_template" value="table">
+                            <input type="hidden" name="_captcha" value="false">
+
+                            <div class="mb-5">
+                                <label class="block text-neon font-mono text-sm mb-2">NAME</label>
+                                <input type="text" name="name" required
+                                    class="form-input w-full px-4 py-3 rounded-xl bg-dark/50 border border-gray-700 text-white font-mono focus:outline-none transition-all"
+                                    placeholder="Your name">
+                            </div>
+                            <div class="mb-5">
+                                <label class="block text-cyber font-mono text-sm mb-2">EMAIL</label>
+                                <input type="email" name="email" required
+                                    class="form-input w-full px-4 py-3 rounded-xl bg-dark/50 border border-gray-700 text-white font-mono focus:outline-none transition-all"
+                                    placeholder="your@email.com">
+                            </div>
+                            <div class="mb-5">
+                                <label class="block text-matrix font-mono text-sm mb-2">MESSAGE</label>
+                                <textarea name="message" required rows="4"
+                                    class="form-input w-full px-4 py-3 rounded-xl bg-dark/50 border border-gray-700 text-white font-mono resize-none focus:outline-none transition-all"
+                                    placeholder="Tell me about your project..."></textarea>
+                            </div>
+                            <button type="submit" id="submitBtn"
+                                class="btn-cyber w-full px-8 py-4 rounded-xl border-2 border-neon text-neon font-display font-semibold hover:bg-neon hover:text-dark transition-all flex items-center justify-center">
+                                <span>SEND MESSAGE</span>
+                                <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="space-y-4 reveal-right">
+                        <div class="card-holographic rounded-xl p-5 flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-neon/10 border border-neon/30 flex items-center justify-center shrink-0">
+                                <i class="fas fa-envelope text-neon text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display font-bold text-white">EMAIL</h3>
+                                <p class="text-gray-400 text-sm">hiythamali69@gmail.com</p>
+                            </div>
+                        </div>
+
+                        <div class="card-holographic rounded-xl p-5 flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-cyber/10 border border-cyber/30 flex items-center justify-center shrink-0">
+                                <i class="fas fa-map-marker-alt text-cyber text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display font-bold text-white">LOCATION</h3>
+                                <p class="text-gray-400 text-sm">Available Worldwide (Remote)</p>
+                            </div>
+                        </div>
+
+                        <div class="card-holographic rounded-xl p-5 flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-matrix/10 border border-matrix/30 flex items-center justify-center shrink-0">
+                                <i class="fas fa-clock text-matrix text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display font-bold text-white">AVAILABILITY</h3>
+                                <p class="text-gray-400 text-sm">Open for freelance projects</p>
+                            </div>
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="flex justify-center gap-4 pt-4">
+                            <a href="#"
+                                class="social-link w-12 h-12 rounded-xl bg-neon/10 border border-neon/30 flex items-center justify-center text-neon hover:bg-neon hover:text-dark">
+                                <i class="fab fa-github text-xl"></i>
+                            </a>
+                            <a href="#"
+                                class="social-link w-12 h-12 rounded-xl bg-cyber/10 border border-cyber/30 flex items-center justify-center text-cyber hover:bg-cyber hover:text-white">
+                                <i class="fab fa-linkedin text-xl"></i>
+                            </a>
+                            <a href="#"
+                                class="social-link w-12 h-12 rounded-xl bg-matrix/10 border border-matrix/30 flex items-center justify-center text-matrix hover:bg-matrix hover:text-dark">
+                                <i class="fab fa-twitter text-xl"></i>
+                            </a>
+                            <a href="#"
+                                class="social-link w-12 h-12 rounded-xl bg-glow/10 border border-glow/30 flex items-center justify-center text-glow hover:bg-glow hover:text-white">
+                                <i class="fab fa-instagram text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-gray-800/50">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left">
+                    <div class="text-xl font-display font-bold">
+                        Haitham<span class="text-neon">.</span>Ali
+                    </div>
+                    <p class="text-gray-500 text-sm mt-1">Full-Stack Developer & Designer</p>
+                </div>
+                <div class="text-gray-500 text-sm">
+                    <span class="text-neon">&lt;</span>
+                    Built with passion
+                    <span class="text-neon">/&gt;</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading Screen
+        var loader = document.getElementById('loader');
+        var animationsInitialized = false;
+
+        function hideLoader() {
+            if (loader) {
+                loader.classList.add('hidden');
+            }
+        }
+
+        function initAnimations() {
+            if (animationsInitialized) return;
+            animationsInitialized = true;
+
+            // Hero animations
+            var heroTitles = document.querySelectorAll('.hero-title-text');
+            heroTitles.forEach(function (title, index) {
+                setTimeout(function () {
+                    title.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    title.style.transform = 'translateY(0)';
+                    title.style.opacity = '1';
+                }, 200 + (index * 150));
+            });
+
+            // Typewriter
+            var typewriterElement = document.getElementById('typewriter');
+            if (typewriterElement && typeof Typewriter !== 'undefined') {
+                setTimeout(function () {
+                    new Typewriter(typewriterElement, [
+                        "Building digital experiences that matter",
+                        "Web Developer | Mobile Developer | Designer",
+                        "Transforming ideas into reality",
+                        "Let's create something amazing together"
+                    ], { typeSpeed: 60, deleteSpeed: 30, pauseTime: 2500 });
+                }, 800);
+            }
+
+            // Stagger items
+            var staggerItems = document.querySelectorAll('.stagger-item');
+            staggerItems.forEach(function (item, index) {
+                setTimeout(function () {
+                    item.classList.add('active');
+                }, 400 + (index * 100));
+            });
+
+            // Skill bars
+            var skillBars = document.querySelectorAll('.skill-bar-fill');
+            skillBars.forEach(function (bar) {
+                var width = bar.getAttribute('data-width');
+                if (width) {
+                    bar.style.width = width;
+                }
+            });
+
+            revealOnScroll();
+        }
+
+        function revealOnScroll() {
+            var reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+            reveals.forEach(function (el) {
+                var windowHeight = window.innerHeight;
+                var elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 80) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        // Check if page is loaded
+        if (document.readyState === 'complete') {
+            hideLoader();
+            initAnimations();
+        } else {
+            window.addEventListener('load', function () {
+                setTimeout(function () {
+                    hideLoader();
+                    initAnimations();
+                }, 1500);
+            });
+        }
+
+        // Handle back button
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                hideLoader();
+            }
+        });
+
+        window.addEventListener('scroll', revealOnScroll);
+
+        // Particles
+        function createParticles() {
+            var container = document.getElementById('particles');
+            var colors = ['#00ff9d', '#7700ff', '#00ff41', '#ff00ff'];
+
+            for (var i = 0; i < 35; i++) {
+                var particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = (Math.random() * 3 + 2) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (Math.random() * 8 + 8) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Navbar scroll
+        window.addEventListener('scroll', function () {
+            var navbar = document.getElementById('navbar');
+            if (navbar) {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+        });
+
+        // Mobile menu
+        function toggleMobileMenu() {
+            var menu = document.getElementById('mobileMenu');
+            var hamburger = document.getElementById('hamburger');
+            if (menu) menu.classList.toggle('active');
+            if (hamburger) hamburger.classList.toggle('active');
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+
+        // Testimonial slider
+        var currentSlide = 0;
+        var totalSlides = 3;
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            var track = document.getElementById('testimonialTrack');
+            if (track) {
+                track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+            }
+
+            var dots = document.querySelectorAll('.testimonial-dot');
+            dots.forEach(function (dot, index) {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        setInterval(nextSlide, 6000);
+
+        // Typewriter class
+        class Typewriter {
+            constructor(element, texts, options) {
+                this.element = element;
+                this.texts = texts;
+                this.typeSpeed = options.typeSpeed || 70;
+                this.deleteSpeed = options.deleteSpeed || 35;
+                this.pauseTime = options.pauseTime || 2000;
+                this.currentTextIndex = 0;
+                this.currentCharIndex = 0;
+                this.isDeleting = false;
+                this.type();
+            }
+
+            type() {
+                var currentText = this.texts[this.currentTextIndex];
+
+                if (this.isDeleting) {
+                    this.element.textContent = currentText.substring(0, this.currentCharIndex - 1);
+                    this.currentCharIndex--;
+
+                    if (this.currentCharIndex === 0) {
+                        this.isDeleting = false;
+                        this.currentTextIndex = (this.currentTextIndex + 1) % this.texts.length;
+                        setTimeout(() => this.type(), 500);
+                        return;
+                    }
+                } else {
+                    this.element.textContent = currentText.substring(0, this.currentCharIndex + 1);
+                    this.currentCharIndex++;
+
+                    if (this.currentCharIndex === currentText.length) {
+                        this.isDeleting = true;
+                        setTimeout(() => this.type(), this.pauseTime);
+                        return;
+                    }
+                }
+
+                var speed = this.isDeleting ? this.deleteSpeed : this.typeSpeed;
+                setTimeout(() => this.type(), speed);
+            }
+        }
+
+        // Filter functionality
+        var filterBtns = document.querySelectorAll('.filter-btn');
+        var projects = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                filterBtns.forEach(function (b) {
+                    b.classList.remove('active', 'bg-neon/10', 'text-neon', 'border-neon/30');
+                    b.classList.add('border-gray-700', 'text-gray-400');
+                });
+
+                this.classList.add('active', 'bg-neon/10', 'text-neon', 'border-neon/30');
+                this.classList.remove('border-gray-700', 'text-gray-400');
+
+                var filter = this.dataset.filter;
+
+                projects.forEach(function (project) {
+                    if (filter === 'all' || project.dataset.category === filter) {
+                        project.style.display = 'block';
+                        setTimeout(function () {
+                            project.style.opacity = '1';
+                            project.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        project.style.opacity = '0';
+                        project.style.transform = 'translateY(20px)';
+                        setTimeout(function () {
+                            project.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Form submit
+        var contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function (e) {
+                var submitBtn = document.getElementById('submitBtn');
+                submitBtn.innerHTML = '<span>SENDING...</span> <i class="fas fa-spinner fa-spin ml-2"></i>';
+                submitBtn.disabled = true;
+            });
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+            anchor.addEventListener('click', function (e) {
+                var href = this.getAttribute('href');
+                if (href.startsWith('#') && href.length > 1) {
+                    e.preventDefault();
+                    var target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    var mobileMenu = document.getElementById('mobileMenu');
+                    var hamburger = document.getElementById('hamburger');
+                    if (mobileMenu) mobileMenu.classList.remove('active');
+                    if (hamburger) hamburger.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

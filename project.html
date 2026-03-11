@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | Haitham Ali</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neon: "#00ff9d",
+                        cyber: "#7700ff",
+                        matrix: "#00ff41",
+                        dark: "#0a0a0a",
+                        glow: "#ff00ff"
+                    },
+                    fontFamily: {
+                        'mono': ['"Space Mono"', 'monospace'],
+                        'display': ['"Orbitron"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1);
+        }
+        
+        .card-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 157, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card-glass:hover {
+            border-color: rgba(0, 255, 157, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 157, 0.1);
+        }
+        
+        .btn-cyber {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .btn-cyber::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-cyber:hover::before { left: 100%; }
+        
+        .btn-cyber:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
+        }
+        
+        .hero-image {
+            transition: all 0.5s ease;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .hero-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 255, 157, 0.2);
+        }
+        
+        .tech-tag {
+            transition: all 0.3s ease;
+        }
+        
+        .tech-tag:hover {
+            transform: scale(1.05);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 255, 157, 0.1);
+        }
+        
+        .loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-ring {
+            width: 60px; height: 60px;
+            border: 3px solid transparent;
+            border-top-color: #00ff9d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .tag-neon { background: rgba(0, 255, 157, 0.2); border-color: rgba(0, 255, 157, 0.5); color: #00ff9d; }
+        .tag-cyber { background: rgba(119, 0, 255, 0.2); border-color: rgba(119, 0, 255, 0.5); color: #7700ff; }
+        .tag-matrix { background: rgba(0, 255, 65, 0.2); border-color: rgba(0, 255, 65, 0.5); color: #00ff41; }
+        .tag-glow { background: rgba(255, 0, 255, 0.2); border-color: rgba(255, 0, 255, 0.5); color: #ff00ff; }
+        
+        .icon-neon { color: #00ff9d; }
+        .icon-cyber { color: #7700ff; }
+        .icon-matrix { color: #00ff41; }
+        .icon-glow { color: #ff00ff; }
+        
+        .bg-neon { background: rgba(0, 255, 157, 0.1); }
+        .bg-cyber { background: rgba(119, 0, 255, 0.1); }
+        .bg-matrix { background: rgba(0, 255, 65, 0.1); }
+        .bg-glow { background: rgba(255, 0, 255, 0.1); }
+        
+        .border-neon { border-color: rgba(0, 255, 157, 0.3); }
+        .border-cyber { border-color: rgba(119, 0, 255, 0.3); }
+        .border-matrix { border-color: rgba(0, 255, 65, 0.3); }
+        .border-glow { border-color: rgba(255, 0, 255, 0.3); }
+    </style>
+</head>
+
+<body class="font-sans">
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-ring"></div>
+    </div>
+    
+    <!-- Background -->
+    <div class="grid-overlay"></div>
+    
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 py-4">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+            <a href="index.html" class="btn-cyber px-4 py-2 rounded-lg border border-neon text-neon text-sm font-display">
+                <i class="fas fa-arrow-left mr-2"></i> BACK
+            </a>
+            
+            <div class="flex gap-3">
+                <a href="#" id="liveDemo" class="btn-cyber px-4 py-2 rounded-lg border border-cyber text-cyber text-sm font-display" target="_blank">
+                    <i class="fas fa-external-link-alt mr-2"></i> LIVE DEMO
+                </a>
+                <a href="#" id="githubLink" class="btn-cyber px-4 py-2 rounded-lg border border-matrix text-matrix text-sm font-display" target="_blank">
+                    <i class="fab fa-github mr-2"></i> CODE
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-28 pb-12 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-5xl mx-auto">
+                <!-- Hero Image -->
+                <div class="hero-image mb-8 aspect-video">
+                    <img id="heroImage" src="" alt="Project" class="w-full h-full object-cover">
+                </div>
+                
+                <!-- Title & Tags -->
+                <div class="text-center mb-12">
+                    <div class="flex flex-wrap justify-center gap-3 mb-4" id="projectTags"></div>
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-4">
+                        <span id="projectTitle" class="text-neon"></span>
+                    </h1>
+                    <p id="projectDescription" class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto"></p>
+                </div>
+                
+                <!-- Meta Info -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+                    <div class="card-glass rounded-xl p-5 text-center">
+                        <i class="fas fa-calendar text-neon text-xl mb-2"></i>
+                        <div class="text-gray-400 text-sm">YEAR</div>
+                        <div id="projectYear" class="font-display font-bold text-white"></div>
+                    </div>
+                    <div class="card-glass rounded-xl p-5 text-center">
+                        <i class="fas fa-user text-cyber text-xl mb-2"></i>
+                        <div class="text-gray-400 text-sm">CLIENT</div>
+                        <div id="projectClient" class="font-display font-bold text-white"></div>
+                    </div>
+                    <div class="card-glass rounded-xl p-5 text-center">
+                        <i class="fas fa-clock text-matrix text-xl mb-2"></i>
+                        <div class="text-gray-400 text-sm">DURATION</div>
+                        <div id="projectDuration" class="font-display font-bold text-white"></div>
+                    </div>
+                    <div class="card-glass rounded-xl p-5 text-center">
+                        <i class="fas fa-briefcase text-glow text-xl mb-2"></i>
+                        <div class="text-gray-400 text-sm">ROLE</div>
+                        <div id="projectRole" class="font-display font-bold text-white"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="py-12 relative">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-5xl mx-auto">
+                <!-- Tech Stack -->
+                <div class="mb-16">
+                    <h2 class="text-2xl font-display font-bold mb-6">
+                        <span class="text-cyber">TECH</span>
+                        <span class="text-white"> STACK</span>
+                    </h2>
+                    <div class="flex flex-wrap gap-3" id="techStack"></div>
+                </div>
+                
+                <!-- Challenge & Solution -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <div class="card-glass rounded-xl p-6">
+                        <h3 class="text-xl font-display font-bold text-neon mb-4">
+                            <i class="fas fa-puzzle-piece mr-2"></i> THE CHALLENGE
+                        </h3>
+                        <p id="projectChallenge" class="text-gray-400 leading-relaxed"></p>
+                    </div>
+                    <div class="card-glass rounded-xl p-6">
+                        <h3 class="text-xl font-display font-bold text-cyber mb-4">
+                            <i class="fas fa-lightbulb mr-2"></i> THE SOLUTION
+                        </h3>
+                        <p id="projectSolution" class="text-gray-400 leading-relaxed"></p>
+                    </div>
+                </div>
+                
+                <!-- Screenshots -->
+                <div class="mb-16">
+                    <h2 class="text-2xl font-display font-bold mb-6">
+                        <span class="text-matrix">PROJECT</span>
+                        <span class="text-white"> SCREENSHOTS</span>
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="screenshots"></div>
+                </div>
+                
+                <!-- Features -->
+                <div class="mb-16">
+                    <h2 class="text-2xl font-display font-bold mb-6">
+                        <span class="text-glow">KEY</span>
+                        <span class="text-white"> FEATURES</span>
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="features"></div>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-gray-800">
+                    <a href="#" id="prevProject" class="btn-cyber px-6 py-3 rounded-lg border border-gray-600 text-gray-400 hover:border-neon hover:text-neon text-sm">
+                        <i class="fas fa-arrow-left mr-2"></i> PREVIOUS
+                    </a>
+                    <a href="all-projects.html" class="btn-cyber px-6 py-3 rounded-lg border-2 border-neon text-neon hover:bg-neon hover:text-dark text-sm font-display">
+                        VIEW ALL PROJECTS
+                    </a>
+                    <a href="#" id="nextProject" class="btn-cyber px-6 py-3 rounded-lg border border-gray-600 text-gray-400 hover:border-cyber hover:text-cyber text-sm">
+                        NEXT <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-800/50 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="text-lg font-display font-bold">
+                Haitham <span class="text-neon">.</span>Ali
+            </div>
+            <p class="text-gray-500 text-sm mt-1">Creative Developer</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // PROJECTS DATA
+        // ============================================
+        const projectsData = {
+            ecommerce: {
+                title: "E-COMMERCE PLATFORM",
+                description: "Interactive shopping experience with WebGL visualization and modern UI/UX design",
+                heroImage: "IMAGES/Ecommerce.png",
+                tags: [
+                    { text: "3D", color: "neon" },
+                    { text: "WEB", color: "cyber" },
+                    { text: "E-COMMERCE", color: "matrix" }
+                ],
+                year: "2024",
+                client: "TechMart Inc.",
+                duration: "4 Months",
+                role: "Full Stack Developer",
+                techStack: [
+                    { name: "React", icon: "fab fa-react", color: "neon" },
+                    { name: "Three.js", icon: "fas fa-cube", color: "cyber" },
+                    { name: "Node.js", icon: "fab fa-node-js", color: "matrix" },
+                    { name: "MongoDB", icon: "fas fa-database", color: "glow" }
+                ],
+                challenge: "The client needed a modern e-commerce platform that stands out from competitors. The main challenge was creating an immersive 3D product showcase while maintaining fast loading times and SEO optimization.",
+                solution: "I implemented a hybrid approach using Three.js for product visualization with lazy loading. React was used for the frontend with server-side rendering for SEO. The result was a 40% increase in user engagement.",
+                screenshots: [
+                    "IMAGES/Ecommerce.png",
+                    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600"
+                ],
+                features: [
+                    { icon: "fas fa-cube", title: "3D PRODUCT VIEW", desc: "Interactive 360° product visualization", color: "neon" },
+                    { icon: "fas fa-mobile-alt", title: "RESPONSIVE", desc: "Perfect on all devices", color: "cyber" },
+                    { icon: "fas fa-bolt", title: "FAST LOADING", desc: "Optimized performance", color: "matrix" }
+                ],
+                liveDemo: "https://example.com/ecommerce",
+                github: "https://github.com/alexchen/ecommerce"
+            },
+            
+            tesla: {
+                title: "TESLA CAR SHOWCASE",
+                description: "Immersive 3D car visualization with interactive features and stunning animations",
+                heroImage: "IMAGES/carTesla.png",
+                tags: [
+                    { text: "3D", color: "cyber" },
+                    { text: "SHOWCASE", color: "matrix" },
+                    { text: "AUTOMOTIVE", color: "glow" }
+                ],
+                year: "2024",
+                client: "Tesla Motors",
+                duration: "3 Months",
+                role: "Creative Developer",
+                techStack: [
+                    { name: "Three.js", icon: "fas fa-cube", color: "cyber" },
+                    { name: "GSAP", icon: "fas fa-film", color: "neon" },
+                    { name: "WebGL", icon: "fas fa-palette", color: "matrix" }
+                ],
+                challenge: "Tesla wanted an interactive car showcase that allows users to explore every detail of the vehicle in 3D. The challenge was loading high-quality 3D models without compromising performance.",
+                solution: "I used progressive loading with LOD techniques. The 3D model loads in stages, starting with a low-poly version. Custom shaders were created for realistic car paint materials.",
+                screenshots: [
+                    "IMAGES/carTesla.png",
+                    "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600"
+                ],
+                features: [
+                    { icon: "fas fa-car", title: "360° VIEW", desc: "Explore every angle", color: "cyber" },
+                    { icon: "fas fa-palette", title: "COLOR PICKER", desc: "Customize car colors", color: "neon" },
+                    { icon: "fas fa-expand", title: "INTERIOR VIEW", desc: "Virtual interior tour", color: "matrix" }
+                ],
+                liveDemo: "https://example.com/tesla",
+                github: "https://github.com/alexchen/tesla-showcase"
+            },
+            
+            nike: {
+                title: "NIKE JACKETS EXPERIENCE",
+                description: "Interactive product showcase with animations and modern shopping experience",
+                heroImage: "IMAGES/nike-proj.png",
+                tags: [
+                    { text: "E-COMMERCE", color: "matrix" },
+                    { text: "BRAND", color: "glow" },
+                    { text: "FASHION", color: "neon" }
+                ],
+                year: "2023",
+                client: "Nike Inc.",
+                duration: "2 Months",
+                role: "Frontend Developer",
+                techStack: [
+                    { name: "React", icon: "fab fa-react", color: "neon" },
+                    { name: "GSAP", icon: "fas fa-film", color: "cyber" },
+                    { name: "Three.js", icon: "fas fa-cube", color: "matrix" }
+                ],
+                challenge: "Nike wanted a unique product page experience that showcases their new jacket collection with interactive elements while maintaining fast e-commerce functionality.",
+                solution: "I created a custom React application integrated with Shopify's Buy SDK. GSAP animations bring products to life on scroll, while product hotspots allow users to explore jacket features.",
+                screenshots: [
+                    "IMAGES/nike-proj.png",
+                    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"
+                ],
+                features: [
+                    { icon: "fas fa-tshirt", title: "PRODUCT HOTSPOTS", desc: "Interactive feature points", color: "matrix" },
+                    { icon: "fas fa-magic", title: "SCROLL ANIMATIONS", desc: "Engaging scroll effects", color: "glow" },
+                    { icon: "fas fa-shopping-cart", title: "QUICK SHOP", desc: "Seamless checkout", color: "neon" }
+                ],
+                liveDemo: "https://example.com/nike",
+                github: "https://github.com/alexchen/nike-jackets"
+            },
+            
+            cafe: {
+                title: "ORTA CAFE EXPERIENCE",
+                description: "Complete branding and website design for a modern coffee shop with immersive atmosphere",
+                heroImage: "IMAGES/Screenshot 2026-01-15 164023.png",
+                tags: [
+                    { text: "BRANDING", color: "glow" },
+                    { text: "WEB", color: "neon" },
+                    { text: "CAFE", color: "cyber" }
+                ],
+                year: "2023",
+                client: "Orta Cafe",
+                duration: "6 Weeks",
+                role: "Designer & Developer",
+                techStack: [
+                    { name: "HTML/CSS", icon: "fab fa-html5", color: "neon" },
+                    { name: "JavaScript", icon: "fab fa-js", color: "cyber" },
+                    { name: "GSAP", icon: "fas fa-film", color: "matrix" }
+                ],
+                challenge: "Orta Cafe needed a complete brand identity and online presence. The challenge was capturing the warm, cozy atmosphere of the cafe in a digital experience.",
+                solution: "I started with brand identity design including logo, colors, and typography. The website features smooth animations, an interactive menu, and a reservation system.",
+                screenshots: [
+                    "IMAGES/Screenshot 2026-01-15 164023.png",
+                    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600"
+                ],
+                features: [
+                    { icon: "fas fa-coffee", title: "INTERACTIVE MENU", desc: "Browse menu items", color: "glow" },
+                    { icon: "fas fa-calendar", title: "RESERVATIONS", desc: "Online table booking", color: "neon" },
+                    { icon: "fas fa-map-marker-alt", title: "LOCATION", desc: "Find us easily", color: "cyber" }
+                ],
+                liveDemo: "https://example.com/orta-cafe",
+                github: "https://github.com/alexchen/orta-cafe"
+            }
+        };
+
+        // Project order for navigation
+        const projectOrder = ['ecommerce', 'tesla', 'nike', 'cafe'];
+
+        // ============================================
+        // LOAD PROJECT
+        // ============================================
+        function loadProject() {
+            // Get ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            
+            console.log('Project ID:', projectId); // للتحقق
+            
+            const project = projectsData[projectId];
+            
+            // If no project found, show first one
+            if (!project) {
+                console.log('Project not found, loading first project');
+                window.location.href = 'project.html?id=ecommerce';
+                return;
+            }
+            
+            // Update page title
+            document.title = project.title + " | Alex Chen";
+            
+            // Update hero
+            document.getElementById('heroImage').src = project.heroImage;
+            document.getElementById('heroImage').alt = project.title;
+            document.getElementById('projectTitle').textContent = project.title;
+            document.getElementById('projectDescription').textContent = project.description;
+            
+            // Update tags
+            const tagsContainer = document.getElementById('projectTags');
+            tagsContainer.innerHTML = project.tags.map(tag => 
+                '<span class="tech-tag px-4 py-2 border rounded-full text-sm tag-' + tag.color + '">' + tag.text + '</span>'
+            ).join('');
+            
+            // Update meta
+            document.getElementById('projectYear').textContent = project.year;
+            document.getElementById('projectClient').textContent = project.client;
+            document.getElementById('projectDuration').textContent = project.duration;
+            document.getElementById('projectRole').textContent = project.role;
+            
+            // Update tech stack
+            const techContainer = document.getElementById('techStack');
+            techContainer.innerHTML = project.techStack.map(tech => 
+                '<div class="tech-tag flex items-center gap-3 px-5 py-3 rounded-xl bg-' + tech.color + ' border-' + tech.color + '">' +
+                '<i class="' + tech.icon + ' icon-' + tech.color + ' text-xl"></i>' +
+                '<span class="text-white">' + tech.name + '</span>' +
+                '</div>'
+            ).join('');
+            
+            // Update challenge & solution
+            document.getElementById('projectChallenge').textContent = project.challenge;
+            document.getElementById('projectSolution').textContent = project.solution;
+            
+            // Update screenshots
+            const screenshotsContainer = document.getElementById('screenshots');
+            screenshotsContainer.innerHTML = project.screenshots.map(img => 
+                '<div class="rounded-xl overflow-hidden">' +
+                '<img src="' + img + '" alt="Screenshot" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">' +
+                '</div>'
+            ).join('');
+            
+            // Update features
+            const featuresContainer = document.getElementById('features');
+            featuresContainer.innerHTML = project.features.map(feature => 
+                '<div class="feature-card card-glass rounded-xl p-6">' +
+                '<div class="w-14 h-14 rounded-xl bg-' + feature.color + ' border-' + feature.color + ' flex items-center justify-center mb-4">' +
+                '<i class="' + feature.icon + ' icon-' + feature.color + ' text-2xl"></i>' +
+                '</div>' +
+                '<h3 class="font-display font-bold text-white mb-2">' + feature.title + '</h3>' +
+                '<p class="text-gray-400 text-sm">' + feature.desc + '</p>' +
+                '</div>'
+            ).join('');
+            
+            // Update links
+            document.getElementById('liveDemo').href = project.liveDemo;
+            document.getElementById('githubLink').href = project.github;
+            
+            // Update navigation
+            const currentIndex = projectOrder.indexOf(projectId);
+            
+            if (currentIndex > 0) {
+                const prevId = projectOrder[currentIndex - 1];
+                document.getElementById('prevProject').href = 'project.html?id=' + prevId;
+                document.getElementById('prevProject').style.visibility = 'visible';
+            } else {
+                document.getElementById('prevProject').style.visibility = 'hidden';
+            }
+            
+            if (currentIndex < projectOrder.length - 1) {
+                const nextId = projectOrder[currentIndex + 1];
+                document.getElementById('nextProject').href = 'project.html?id=' + nextId;
+                document.getElementById('nextProject').style.visibility = 'visible';
+            } else {
+                document.getElementById('nextProject').style.visibility = 'hidden';
+            }
+            
+            // Hide loader
+            setTimeout(function() {
+                document.getElementById('loader').classList.add('hidden');
+            }, 500);
+        }
+
+        // Load on page ready
+        document.addEventListener('DOMContentLoaded', loadProject);
+    </script>
+</body>
+</html>
